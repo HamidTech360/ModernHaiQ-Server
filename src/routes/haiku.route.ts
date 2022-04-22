@@ -1,9 +1,9 @@
 import express from "express";
 const router = express.Router()
 import Auth from '../middlewares/auth'
-import {postRequest} from '../controllers/rentRequest.controller'
+import {saveHaik} from '../controllers/haik.controller'
 
-router.post('/', postRequest)
+router.post('/', saveHaik)
 
 
 export default router;

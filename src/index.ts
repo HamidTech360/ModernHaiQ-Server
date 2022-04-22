@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import {CONFIG}  from './config/index'
 const config = CONFIG()
-import user from './routes/rentRequest.route'
+import haik from './routes/haiku.route'
 
 
 
@@ -21,6 +21,6 @@ mongoose.connect(config.DATABASE_URL as string)
 
 app.use(cors())
 app.use(express.json())
-app.use('/api/rent_request', user)
+app.use('/api/haiku', haik)
 
 app.listen(config.PORT, ()=>console.log(`Listening to port ${config.PORT}`))
