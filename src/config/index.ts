@@ -12,7 +12,8 @@ export const CONFIG = () => {
         SEND_GRID_EMAIL_KEY:process.env.SEND_GRID_EMAIL_KEY,
         cloud_name:process.env.cloud_name,
         cloudinary_api_key:process.env.cloudinary_api_key,
-        cloudinary_api_secret:process.env.cloudinary_api_secret
+        cloudinary_api_secret:process.env.cloudinary_api_secret,
+        stripe_api_secret:process.env.stripe_api_secret
     }
 
 }

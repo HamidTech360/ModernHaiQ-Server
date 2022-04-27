@@ -27,6 +27,10 @@ const haikuSchema = new mongoose.Schema({
    Author:{
        type:String,
        default:'unknown'
+   },
+   memorialized:{
+       type:Boolean,
+       default:false
    }
 }, {timestamps:true})
 

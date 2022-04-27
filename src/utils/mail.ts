@@ -11,7 +11,7 @@ export const sendMail =async  (receiver_email:any, subject:any, email_body:any)=
         const message = {
            to: receiver_email, 
            from:{
-               name:'Skupal',
+               name:'ModernHaiq',
                email:'hamid@icopystory.com'
            },
            subject,

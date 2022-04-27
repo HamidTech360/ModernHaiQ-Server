@@ -21,6 +21,7 @@
     "@types/lodash": "^4.14.178",
     "@types/node": "^17.0.12",
     "@types/nodemailer": "^6.4.4",
+    "@types/stripe": "^8.0.417",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.28.1",
     "config": "^3.3.7",
@@ -30,8 +31,10 @@
     "joi-browser": "^13.4.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "moment": "^2.29.3",
     "mongoose": "^6.1.8",
     "nodemailer": "^6.7.2",
+    "stripe": "^8.219.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
   }
