@@ -20,7 +20,7 @@ export const sendMail =async  (receiver_email:any, subject:any, email_body:any)=
         }
 
         const response = await sgMail.send(message)
-        console.log('Email sent successfully');
+        console.log(`Email sent to ${receiver_email}`);
         
     }catch(ex){
        console.log(ex);

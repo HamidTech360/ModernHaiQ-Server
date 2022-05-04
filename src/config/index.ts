@@ -13,7 +13,7 @@ export const CONFIG = () => {
         cloud_name:process.env.cloud_name,
         cloudinary_api_key:process.env.cloudinary_api_key,
         cloudinary_api_secret:process.env.cloudinary_api_secret,
-        stripe_api_secret:process.env.stripe_api_secret
+        stripe_api_secret:process.env.stripe_secret_key
     }
 
 }

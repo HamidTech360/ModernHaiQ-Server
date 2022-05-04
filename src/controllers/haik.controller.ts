@@ -1,12 +1,13 @@
 import cloudinary from '../utils/cloudinary'
+import joi from 'joi-browser'
 import {CONFIG} from '../config'
 const config = CONFIG()
 import Stripe from 'stripe'
 const stripe = new Stripe (`${config.stripe_api_secret}`, {apiVersion:'2020-08-27'})
 import { sendMail } from '../utils/mail'
-import { CreateHaikuMailTemplate } from '../utils/mailTemplates'
+import { CreateHaikuMailTemplate, HaikuReceiptMailTemplate } from '../utils/mailTemplates'
 import { ValidateRequest, HaikModel } from '../models/haiku.model'
-import { send } from 'process'
+import {PaymentModel} from '../models/payment.model'
 const clientUrl= 'https://modernhaiq.netlify.app'
 
 
@@ -54,8 +55,33 @@ export const getHaik = async (req:any, res:any, next:any)=>{
     console.log(req.params.id)
     try{
         const result = await HaikModel.findById(req.params.id)
-        console.log(result)
         if(!result) res.status(404).send('Haiku not found')
+
+         if(!result.memorialized){
+            let timeStamp = new Date (result.createdAt)
+            let TimeStamp = new Date(timeStamp).getTime()
+
+            let future = new Date (result.createdAt)
+            future.setDate(future.getDate() + 30)
+            let Future = new Date(future).getTime()
+
+            let now = new Date().getTime()
+
+            let distance = Future - now
+
+            if(distance <= 0){
+                await HaikModel.findByIdAndDelete(req.params.id)
+                return res.status(404).send('Haiku expired')
+            }
+
+            //10 20 30
+            
+            //check distance
+
+                //if distance expired
+                    //delete and return and return a 404 message
+                //continue
+         }
        
         res.json({
             status:'success',
@@ -71,28 +97,60 @@ export const getHaik = async (req:any, res:any, next:any)=>{
 }
 
 export const payment = async (req:any, res:any, next:any)=>{
-    console.log(req.body);
-    let status
+    
+    const {error} = validatePaymentBody(req.body)
+    if(error) return res.status(401).send(error.details[0].message)
+    const {card_number, exp_month, exp_year, cvc, productId, author} = req.body
     try{
+        //@ts-ignore
+       const token = await stripe.tokens.create({
+           
+           card:{
+            number:card_number,
+            exp_month,
+            exp_year,
+             cvc
+           }
+       })
+        console.log(token);
+        
        const response = await stripe.charges.create({
-            source:req.body.token.id,
+            source:token.id,
             amount:10000,
             currency:'usd'
         })
-        status='success'
+        const newPayment = new PaymentModel({
+            productId
+        })
+        await HaikModel.findByIdAndUpdate(productId, {memorialized:true})
+        if(req.body.author) await HaikModel.findByIdAndUpdate(productId, {Author:author})
+        await newPayment.save()
         console.log(response);
-        
+        const user = await HaikModel.findById(productId)
+        sendMail(user.email,'Receipt from Modern HAIQ', CreateHaikuMailTemplate(`${clientUrl}/haiku/${user._id}`))
         res.json({
-            status,
+            status:'success',
             message:'Transaction successful'
         })
 
     }catch(ex){
         console.log(ex);
-        status='failure'  
         res.status(500).send(ex)   
     }
     
+}
+
+function validatePaymentBody (payload:any){
+    const schema = {
+        card_number:joi.string().required(),
+        exp_month:joi.string().required(),
+        exp_year:joi.string().required(),
+        cvc:joi.string().required(),
+        productId: joi.string().required(),
+        author:joi.string()
+    }
+
+    return joi.validate(payload, schema)
 }
 
 
