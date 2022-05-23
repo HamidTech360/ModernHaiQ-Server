@@ -14,10 +14,12 @@ const clientUrl= 'https://modernhaiq.netlify.app'
 export const saveHaik = async (req:any, res:any, next:any)=>{
     
     const {error} = ValidateRequest(req.body)
+    // console.log(req.body);
+    
     if(error) return res.status(401).send(error.details[0].message)
 
     let imageLink 
-    const {line1, line2, line3, image, imageUrl, email} = req.body
+    const {line1, line2, line3, image, imageUrl, email, backgroundMode} = req.body
    if(image==='none'){
        imageLink = imageUrl 
    }else{
@@ -32,10 +34,10 @@ export const saveHaik = async (req:any, res:any, next:any)=>{
    }
 
    try{
-     console.log('FInal link is ', imageLink);
+     //console.log('FInal link is ', imageLink);
         
      const newHaik = new HaikModel({
-        line1, line2, line3, image:imageLink, email
+        line1, line2, line3, image:imageLink, email, backgroundMode
      })
     const saveHaiku= await newHaik.save()
     sendMail(email,'Haik Published', CreateHaikuMailTemplate(`${clientUrl}/haiku/${saveHaiku._id}`))
@@ -52,7 +54,7 @@ export const saveHaik = async (req:any, res:any, next:any)=>{
 }
 
 export const getHaik = async (req:any, res:any, next:any)=>{
-    console.log(req.params.id)
+    //console.log(req.params.id)
     try{
         const result = await HaikModel.findById(req.params.id)
         if(!result) res.status(404).send('Haiku not found')
@@ -127,7 +129,7 @@ export const payment = async (req:any, res:any, next:any)=>{
         await newPayment.save()
         console.log(response);
         const user = await HaikModel.findById(productId)
-        sendMail(user.email,'Receipt from Modern HAIQ', CreateHaikuMailTemplate(`${clientUrl}/haiku/${user._id}`))
+        sendMail(user.email,'Receipt from Modern HAIQ', HaikuReceiptMailTemplate(`${clientUrl}/haiku/${user._id}`))
         res.json({
             status:'success',
             message:'Transaction successful'

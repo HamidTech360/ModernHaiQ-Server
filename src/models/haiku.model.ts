@@ -31,6 +31,11 @@ const haikuSchema = new mongoose.Schema({
    memorialized:{
        type:Boolean,
        default:false
+   },
+   backgroundMode:{
+       type:String,
+       enum:["light", "dark"],
+       required:true
    }
 }, {timestamps:true})
 
@@ -43,6 +48,7 @@ const haikuSchema = new mongoose.Schema({
         line1:joi.string().required(),
         line2:joi.string().required(),
         line3: joi.string().required(),
+        backgroundMode:joi.string().required(),
         imageUrl:joi.any()
     }
 
