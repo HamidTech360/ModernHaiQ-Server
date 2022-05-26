@@ -40,7 +40,7 @@ export const saveHaik = async (req:any, res:any, next:any)=>{
         line1, line2, line3, image:imageLink, email, backgroundMode
      })
     const saveHaiku= await newHaik.save()
-    sendMail(email,'Haik Published', CreateHaikuMailTemplate(`${clientUrl}/haiku/${saveHaiku._id}`))
+    sendMail(email,'HAIQ Published', CreateHaikuMailTemplate(`${clientUrl}/haiku/${saveHaiku._id}`))
 
     res.json({
         status:'success',
