@@ -36,6 +36,11 @@ const haikuSchema = new mongoose.Schema({
        type:String,
        enum:["light", "dark"],
        required:true
+   },
+   expired:{
+    type:Boolean,
+    required:true,
+    default:false
    }
 }, {timestamps:true})
 

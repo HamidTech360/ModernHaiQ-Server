@@ -72,8 +72,8 @@ export const getHaik = async (req:any, res:any, next:any)=>{
             let distance = Future - now
 
             if(distance <= 0){
-                await HaikModel.findByIdAndDelete(req.params.id)
-                return res.status(404).send('Haiku expired')
+                await HaikModel.findByIdAndUpdate(req.params.id, {expired:true})
+                // return res.status(404).send('Haiku expired')
             }
 
             //10 20 30
@@ -124,7 +124,7 @@ export const payment = async (req:any, res:any, next:any)=>{
         const newPayment = new PaymentModel({
             productId
         })
-        await HaikModel.findByIdAndUpdate(productId, {memorialized:true})
+        await HaikModel.findByIdAndUpdate(productId, {memorialized:true, expired:false})
         if(req.body.author) await HaikModel.findByIdAndUpdate(productId, {Author:author})
         await newPayment.save()
         console.log(response);
