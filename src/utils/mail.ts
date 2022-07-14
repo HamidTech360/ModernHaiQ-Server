@@ -15,7 +15,7 @@ export const sendMail =async  (receiver_email:any, subject:any, email_body:any)=
                email:'hamid@icopystory.com'
            },
            subject,
-           text:'Email from Easytopup',
+           text:'Email from Modern Haiq',
            html:email_body
         }
 

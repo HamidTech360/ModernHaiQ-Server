@@ -6,7 +6,7 @@ import {CONFIG}  from './config/index'
 const config = CONFIG()
 import haik from './routes/haiku.route'
 
-
+//https://modernhaiq.netlify.app/haiku/62cef5ed41f585771d3f64f0
 
 if(!config.JWT_SECRET){
     console.log('No Jwt key provided');

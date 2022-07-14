@@ -64,7 +64,7 @@ export const getHaik = async (req:any, res:any, next:any)=>{
             let TimeStamp = new Date(timeStamp).getTime()
 
             let future = new Date (result.createdAt)
-            future.setDate(future.getDate() + 30)
+            future.setDate(future.getDate() + 1)
             let Future = new Date(future).getTime()
 
             let now = new Date().getTime()
